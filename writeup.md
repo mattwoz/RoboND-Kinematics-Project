@@ -17,9 +17,8 @@
 
 [//]: # (Image References)
 
-[image1]: ./misc_images/misc1.png
-[image2]: ./misc_images/misc3.png
-[image3]: ./misc_images/misc2.png
+[image1]: ./derive_theta
+[image2]: ./derive_theta
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -34,38 +33,34 @@ You're reading it!
 ### Kinematic Analysis
 #### 1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
 
-Here is an example of how to include an image in your writeup.
+To derive the DH parameters I followed along with the KR210 Forward Kinematics demo, drawing the same diagram and deriving the appropriate parameters from the kr210.urdf.xacro file.
 
 ![alt text][image1]
 
 #### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
-Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
---- | --- | --- | --- | ---
-0->1 | 0 | 0 | L1 | qi
-1->2 | - pi/2 | L2 | 0 | -pi/2 + q2
-2->3 | 0 | 0 | 0 | 0
-3->4 |  0 | 0 | 0 | 0
-4->5 | 0 | 0 | 0 | 0
-5->6 | 0 | 0 | 0 | 0
-6->EE | 0 | 0 | 0 | 0
+Using the DH parameters given above, I created the individual transformation matrices.  This is done in lines 43-110 of my IK_server.py code, where I took the DH parameter table and inserted values into the transformation matrix between adjacent links developed in the "Forward Kinematics" lesson.  The composition of homogeneous transforms to get from the origin to the gripper frame is then defined by multiplying all transformation matrices between each link together.     
 
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
-And here's where you can draw out and show your math for the derivation of your theta angles. 
+In order to derive theta 1-3 I referenced the inverse kinematics example from lesson 2 as well as the "Inverse Kinematics with Kuka KR210".  Theta 1 was the easy part, due to just needing to project the x and y coordinates from the wrist center.  However, thetas 2 and 3 were much more challenging.  The "Inverse Kinematics with Kuka KR210" lesson was extremely helpful in visualizing this.  I followed along and created my own sketch shown below to better understand the approach, as well as to determine the equations that would need to go into the python code.  
 
 ![alt text][image2]
+
+To determine theta 4-6, as established in the lesson, we first establish the transformation between joints 0 and 3 (R0_3) and then multiply the inverse of this by the total system transformation matrix.  The resulting matrix is the transform between joints 3 and 6 (R3_6), from which we can derive theta 4-6 as covered in lesson 2, section 8.
+
+'''
+ theta4 = atan2(R3_6[2,2], -R3_6[0,2])
+ theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
+ theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+'''
+
 
 ### Project Implementation
 
 #### 1. Fill in the `IK_server.py` file with properly commented python code for calculating Inverse Kinematics based on previously performed Kinematic Analysis. Your code must guide the robot to successfully complete 8/10 pick and place cycles. Briefly discuss the code you implemented and your results. 
 
+Overall I was able to reach the goal of the robot completing 8/10 pick and place cycles.  Lines 31-126 of my IK_server.py contain the forward kinematics section, while lines 130-213 contain the inverse kinematics.  One of the mistakes I made initially was containing my forward kinematics within the for loop, which forced it to re-calculate every time.  This led to minutes of run time just to complete one pick and place operation.  To speed up the process I did move the forward kinematics outside of the for loop, as suggested in the walk-through video.  I did also make the mistake of using "simplify" for every transform.  This became apparent when I used the IK_debug script and the inverse kinematics where taking nearly a minute to calculate, versus less than a second.  Getting rid of this significantly improved the speed of the overall pick and place operation.  One of the issues I attempted to, but have yet to solve, is the excessive wrist rotation as the arm moves to the pick up location.  Although the arm eventually gets to the correct location to make the pickup, this significantly slows down the process and is something I would like to improve.  Now that I have the framework established for completing the pick and place operation, my future improvements can mainly be centered around improved performance. 
 
-Here I'll talk about the code, what techniques I used, what worked and why, where the implementation might fail and how I might improve it if I were going to pursue this project further.  
-
-
-And just for fun, another example image:
-![alt text][image3]
-
-
+Overall I found this project interesting, yet quite challenging.  I found myself endlessly referencing the lessons on inverse/forward kinematics as well as the walk through video when I got stuck.  It was therefore extremely gratifying to see the object get picked up and dropped in the bin successfully the first time.     
