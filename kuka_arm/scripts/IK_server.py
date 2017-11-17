@@ -175,7 +175,7 @@ def handle_calculate_IK(req):
         #theta 1 calculation
         theta1 = atan2(WC[1], WC[0])
 
-        #theta 2 and 3
+        #theta 2 and 3...thank you walk-through video for some help here!
 
         #Establish triangle sides
 	side_a = 1.501
