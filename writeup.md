@@ -29,7 +29,7 @@ Using the DH parameters given above, I created the individual transformation mat
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
-In order to derive theta 1-3 I referenced the inverse kinematics example from lesson 2 as well as the "Inverse Kinematics with Kuka KR210".  Theta 1 was the easy part, due to just needing to project the x and y coordinates from the wrist center.  However, thetas 2 and 3 were much more challenging.  The "Inverse Kinematics with Kuka KR210" lesson was extremely helpful in visualizing this.  I followed along and created my own sketch shown below to better understand the approach, as well as to determine the equations that would need to go into the python code.  I did have to reference the walkthrough video as well when I got stuck on determining side lengths and furthermore theta 2.  
+In order to derive theta 1-3 I referenced the inverse kinematics example from lesson 2 as well as the "Inverse Kinematics with Kuka KR210".  Theta 1 was the easy part, due to just needing to project the x and y coordinates from the wrist center.  However, thetas 2 and 3 were much more challenging.  The "Inverse Kinematics with Kuka KR210" lesson was extremely helpful in visualizing this.  I followed along and created my own sketch shown below to better understand the approach, as well as to determine the equations that would need to go into the python code.  I did have to reference the walkthrough video as well when I got stuck on determining theta 2.  
 
 ![alt text][image2]
 
