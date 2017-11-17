@@ -17,8 +17,8 @@
 
 [//]: # (Image References)
 
-[image1]: ./derive_theta
-[image2]: ./derive_theta
+[image1]: /derive_theta
+[image2]: /derive_theta
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -50,11 +50,11 @@ In order to derive theta 1-3 I referenced the inverse kinematics example from le
 
 To determine theta 4-6, as established in the lesson, we first establish the transformation between joints 0 and 3 (R0_3) and then multiply the inverse of this by the total system transformation matrix.  The resulting matrix is the transform between joints 3 and 6 (R3_6), from which we can derive theta 4-6 as covered in lesson 2, section 8.
 
-'''
+```
  theta4 = atan2(R3_6[2,2], -R3_6[0,2])
  theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
  theta6 = atan2(-R3_6[1,1], R3_6[1,0])
-'''
+```
 
 
 ### Project Implementation
