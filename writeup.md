@@ -2,7 +2,7 @@
 
 [//]: # (Image References)
 
-[image1]: /derive_theta.jpg
+[image1]: /dh_param.jpg
 [image2]: /derive_theta.jpg
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
